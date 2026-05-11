@@ -8,8 +8,7 @@ st.title("Proyecto final: Satisfacción del Cliente y Resúmenes con Gemini")
 
 # --- CONFIGURACIÓN DE MODELOS ---
 # 1. Configurar Gemini (Asegúrate de poner tu API KEY)
-# genai.configure(api_key="TU_API_KEY_AQUI")
-# Usamos 1.5-flash por ser el estándar actual de alta velocidad
+genai.configure(api_key="AIzaSyD61Q2gkLOYlK2M15FKNtLgpP_8_Np3YJU")
 model_gemini = genai.GenerativeModel('gemini-2.5-flash')
 
 # 2. Configurar Hugging Face (Análisis de sentimiento)
