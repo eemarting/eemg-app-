@@ -27,7 +27,7 @@ tab1, tab2 = st.tabs(["📊 Satisfacción del Cliente mal=1 Excelente=5", "📝 
 # --- OPERACIÓN A: ANÁLISIS DE SENTIMIENTO ---
 with tab1:
     st.header("Satisfacción del cliente")
-    text_input = st.text_area("Introduce un texto para analizar (Español, Inglés, etc.):", key="sentiment_in")
+    text_input = st.text_area("Describe tu experiencia (Español, Inglés, etc.):", key="sentiment_in")
 
     if st.button("Analizar Sentimiento"):
         if text_input:
