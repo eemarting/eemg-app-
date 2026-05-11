@@ -6,7 +6,7 @@ from transformers import pipeline
 
 # Configuración de la página
 st.set_page_config(page_title="Proyecto final, Satisfacción del Cliente, Resumenes de temas con GEMINI", layout="wide")
-st.title("🤖 Plataforma Multi-IA")
+st.title("Proyecto final, Satisfacción del Cliente, Resumenes de temas con GEMINI ")
 
 # --- CONFIGURACIÓN DE MODELOS ---
 # 1. Configurar Gemini (Necesitarás tu API KEY)
@@ -26,7 +26,7 @@ tab1, tab2 = st.tabs(["📊 Satisfacción del Cliente mal=1 Excelente=5", "📝 
 
 # --- OPERACIÓN A: ANÁLISIS DE SENTIMIENTO ---
 with tab1:
-    st.header("Clasificador de Opiniones")
+    st.header("Satisfacción del cliente")
     text_input = st.text_area("Introduce un texto para analizar (Español, Inglés, etc.):", key="sentiment_in")
 
     if st.button("Analizar Sentimiento"):
