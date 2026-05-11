@@ -2,19 +2,17 @@ import streamlit as st
 import google.generativeai as genai
 from transformers import pipeline
 
-# codigo en phyton
-
 # Configuración de la página
 st.set_page_config(page_title="Proyecto final", layout="wide")
-st.title("Proyecto final, Satisfacción del Cliente, Resumenes de temas con GEMINI ")
+st.title("Proyecto final: Satisfacción del Cliente y Resúmenes con Gemini")
 
 # --- CONFIGURACIÓN DE MODELOS ---
-# 1. Configurar Gemini (Necesitarás tu API KEY)
+# 1. Configurar Gemini (Asegúrate de poner tu API KEY)
 # genai.configure(api_key="TU_API_KEY_AQUI")
-model_gemini = genai.GenerativeModel('gemini-2.5-flash')
+# Usamos 1.5-flash por ser el estándar actual de alta velocidad
+model_gemini = genai.GenerativeModel('gemini-1.5-flash')
 
 # 2. Configurar Hugging Face (Análisis de sentimiento)
-# Este modelo se descarga la primera vez que se ejecuta
 @st.cache_resource
 def load_sentiment_model():
     return pipeline("sentiment-analysis", model="nlptown/bert-base-multilingual-uncased-sentiment")
@@ -24,43 +22,45 @@ sentiment_analysis = load_sentiment_model()
 # --- INTERFAZ DE USUARIO ---
 tab1, tab2 = st.tabs(["📊 Encuesta de Satisfacción", "📝 Resumen de Temas GEMINI"])
 
-# --- OPERACIÓN A: ANÁLISIS DE SENTIMIENTO ---
+# --- TAB 1: ANÁLISIS DE SENTIMIENTO ---
 with tab1:
     st.header("Encuesta de Satisfacción")
-    text_input = st.text_area("Describenos como fue tu experiencia (Español, Inglés, etc.):", key="sentiment_in")
+    text_input = st.text_area("Descríbenos como fue tu experiencia:", key="sentiment_in")
 
-    if st.button("Enviar"):
+    # Agregamos una 'key' única para diferenciar este botón
+    if st.button("Enviar Feedback", key="btn_sentiment"):
         if text_input:
             result = sentiment_analysis(text_input)[0]
             label = result['label']
             score = result['score']
 
             st.info(f"Resultado: {label}")
+            st.write(f"Confianza del modelo: {score:.2f}")
             st.progress(score)
         else:
             st.warning("Por favor, ingresa un texto.")
 
-# --- OPERACIÓN B: RESUMEN CON GEMINI ---
+# --- TAB 2: RESUMEN CON GEMINI ---
 with tab2:
-    st.header("Generador de Resumenes con GEMINI")
-    long_text = st.text_area("Pega aquí el artículo o texto largo (Max. 200 caracteres):", height=200)
+    st.header("Generador de Resúmenes con Gemini")
+    long_text = st.text_area("Pega aquí el artículo o texto largo:", height=200, key="summary_in")
 
-if st.button("Enviar"):
-    if long_text:
-        with st.spinner("Gemini está procesando... por favor espera."):
-            try:
-                # Intentamos la generación con tiempo extendido
-                prompt = f"Resume de forma concisa: {long_text}"
-                response = model_gemini.generate_content(
-                    prompt, 
-                    request_options={"timeout": 60}
-                )
-                st.subheader("Resumen:")
-                st.write(response.text)
-            except Exception as e:
-                if "DeadlineExceeded" in str(e):
-                    st.error("La conexión tardó demasiado. Por favor, intenta con un texto más corto o presiona el botón de nuevo.")
-                else:
-                    st.error(f"Hubo un problema con la API: {e}")
-    else:
-        st.warning("El campo de texto está vacío.")
+    # El botón ahora está DENTRO del bloque 'with tab2' e incluye una 'key' única
+    if st.button("Generar Resumen", key="btn_gemini"):
+        if long_text:
+            with st.spinner("Gemini está procesando... por favor espera."):
+                try:
+                    prompt = f"Resume de forma concisa y en español: {long_text}"
+                    response = model_gemini.generate_content(
+                        prompt, 
+                        request_options={"timeout": 60}
+                    )
+                    st.subheader("Resumen:")
+                    st.write(response.text)
+                except Exception as e:
+                    if "DeadlineExceeded" in str(e):
+                        st.error("La conexión tardó demasiado. Reintenta con menos texto.")
+                    else:
+                        st.error(f"Hubo un problema con la API: {e}")
+        else:
+            st.warning("El campo de texto está vacío.")
