@@ -22,14 +22,14 @@ def load_sentiment_model():
 sentiment_analysis = load_sentiment_model()
 
 # --- INTERFAZ DE USUARIO ---
-tab1, tab2 = st.tabs(["📊 Satisfacción del Cliente mal=1 Excelente=5", "📝 Resumen de Temas GEMINI"])
+tab1, tab2 = st.tabs(["📊 Encuesta de Satisfacción", "📝 Resumen de Temas GEMINI"])
 
 # --- OPERACIÓN A: ANÁLISIS DE SENTIMIENTO ---
 with tab1:
-    st.header("Satisfacción del cliente")
-    text_input = st.text_area("Describe tu experiencia (Español, Inglés, etc.):", key="sentiment_in")
+    st.header("Encuesta de Satisfacción")
+    text_input = st.text_area("Describenos como fue tu experiencia (Español, Inglés, etc.):", key="sentiment_in")
 
-    if st.button("Analizar Sentimiento"):
+    if st.button("Enviar"):
         if text_input:
             result = sentiment_analysis(text_input)[0]
             label = result['label']
@@ -42,15 +42,25 @@ with tab1:
 
 # --- OPERACIÓN B: RESUMEN CON GEMINI ---
 with tab2:
-    st.header("Resumen de Texto con Gemini")
-    long_text = st.text_area("Pega aquí el artículo o texto largo:", height=200)
+    st.header("Generador de Resumenes con GEMINI")
+    long_text = st.text_area("Pega aquí el artículo o texto largo (200 caracteres):", height=200)
 
-    if st.button("Generar Resumen"):
-        if long_text:
-            with st.spinner("Gemini está procesando..."):
-                prompt = f"Por favor, resume el siguiente texto de forma concisa y en puntos clave: {long_text}"
-                response = model_gemini.generate_content(prompt)
+if st.button("Generador Resumen"):
+    if long_text:
+        with st.spinner("Gemini está procesando... por favor espera."):
+            try:
+                # Intentamos la generación con tiempo extendido
+                prompt = f"Resume de forma concisa: {long_text}"
+                response = model_gemini.generate_content(
+                    prompt, 
+                    request_options={"timeout": 60}
+                )
                 st.subheader("Resumen:")
                 st.write(response.text)
-        else:
-            st.warning("El campo de texto está vacío.")
+            except Exception as e:
+                if "DeadlineExceeded" in str(e):
+                    st.error("La conexión tardó demasiado. Por favor, intenta con un texto más corto o presiona el botón de nuevo.")
+                else:
+                    st.error(f"Hubo un problema con la API: {e}")
+    else:
+        st.warning("El campo de texto está vacío.")
