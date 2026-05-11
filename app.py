@@ -11,7 +11,7 @@ st.title("Proyecto final, Satisfacción del Cliente, Resumenes de temas con GEMI
 # --- CONFIGURACIÓN DE MODELOS ---
 # 1. Configurar Gemini (Necesitarás tu API KEY)
 # genai.configure(api_key="TU_API_KEY_AQUI")
-model_gemini = genai.GenerativeModel('gemini-pro')
+model_gemini = genai.GenerativeModel('gemini-2.5-flash')
 
 # 2. Configurar Hugging Face (Análisis de sentimiento)
 # Este modelo se descarga la primera vez que se ejecuta
