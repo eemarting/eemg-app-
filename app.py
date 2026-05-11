@@ -5,7 +5,7 @@ from transformers import pipeline
 # codigo en phyton
 
 # Configuración de la página
-st.set_page_config(page_title="Proyecto final, Satisfacción del Cliente, Resumenes de temas con GEMINI", layout="wide")
+st.set_page_config(page_title="Proyecto final", layout="wide")
 st.title("Proyecto final, Satisfacción del Cliente, Resumenes de temas con GEMINI ")
 
 # --- CONFIGURACIÓN DE MODELOS ---
@@ -43,9 +43,9 @@ with tab1:
 # --- OPERACIÓN B: RESUMEN CON GEMINI ---
 with tab2:
     st.header("Generador de Resumenes con GEMINI")
-    long_text = st.text_area("Pega aquí el artículo o texto largo (200 caracteres):", height=200)
+    long_text = st.text_area("Pega aquí el artículo o texto largo (Max. 200 caracteres):", height=200)
 
-if st.button("Generador Resumen"):
+if st.button("Enviar"):
     if long_text:
         with st.spinner("Gemini está procesando... por favor espera."):
             try:
