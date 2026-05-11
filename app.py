@@ -3,7 +3,7 @@ import google.generativeai as genai
 from transformers import pipeline
 
 # Configuración de la página
-st.set_page_config(page_title="Proyecto final", layout="wide")
+st.set_page_config(page_title="Proyecto final EEMG", layout="wide")
 st.title("Proyecto final: Satisfacción del Cliente y Resúmenes con Gemini")
 
 # --- CONFIGURACIÓN DE MODELOS ---
@@ -43,7 +43,7 @@ with tab1:
 # --- TAB 2: RESUMEN CON GEMINI ---
 with tab2:
     st.header("Generador de Resúmenes con Gemini")
-    long_text = st.text_area("Pega aquí el artículo o texto largo:", height=200, key="summary_in")
+    long_text = st.text_area("Pega aquí el artículo o texto largo (Máx 200 caracteres):", height=200, key="summary_in")
 
     # El botón ahora está DENTRO del bloque 'with tab2' e incluye una 'key' única
     if st.button("Generar Resumen", key="btn_gemini"):
