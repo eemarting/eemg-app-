@@ -5,7 +5,7 @@ from transformers import pipeline
 # codigo en phyton
 
 # Configuración de la página
-st.set_page_config(page_title="Multi-IA Hub", layout="wide")
+st.set_page_config(page_title="Proyecto final, Satisfacción del Cliente, Resumenes de temas con GEMINI", layout="wide")
 st.title("🤖 Plataforma Multi-IA")
 
 # --- CONFIGURACIÓN DE MODELOS ---
@@ -22,7 +22,7 @@ def load_sentiment_model():
 sentiment_analysis = load_sentiment_model()
 
 # --- INTERFAZ DE USUARIO ---
-tab1, tab2 = st.tabs(["📊 Análisis de Sentimiento", "📝 Resumen Inteligente"])
+tab1, tab2 = st.tabs(["📊 Satisfacción del Cliente mal=1 Excelente=5", "📝 Resumen de Temas GEMINI"])
 
 # --- OPERACIÓN A: ANÁLISIS DE SENTIMIENTO ---
 with tab1:
